@@ -1,6 +1,8 @@
 package it.polito.tdp.spellchecker;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.spellchecker.model.Dictionary;
@@ -49,6 +51,19 @@ public class FXMLController {
 
     @FXML
     void doSpellCheck(ActionEvent event) {
+    	List<String> words= new ArrayList<>(); 
+    	String parole = this.txtInput.getText();
+    	parole = parole.toLowerCase().replaceAll("[^a-zA-Z]+"," ");
+    	String[] arrayParole=parole.split(" ");
+    	
+    	for(String s: arrayParole) 
+    		words.add(s);
+    	
+   
+    	
+    	
+    	
+    	
 
     }
     

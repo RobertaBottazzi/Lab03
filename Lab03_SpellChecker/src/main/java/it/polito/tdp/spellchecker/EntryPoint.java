@@ -11,23 +11,24 @@ import javafx.stage.Stage;
 
 
 public class EntryPoint extends Application {
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        FXMLLoader loader = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
-        Parent root=loader.load();
-        FXMLController controller;
+	@Override
+	public void start(Stage stage) throws Exception {
         
-        Dictionary model= new Dictionary();
-        controller=loader.getController();
-        controller.setModel(model);
-        
+        Dictionary model = new Dictionary();
+    	FXMLController controller;
+    	
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
+        Parent root = loader.load();
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("/styles/Styles.css");
+        
+        controller = loader.getController();
+        controller.setModel(model);
         
         stage.setTitle("JavaFX and Maven");
         stage.setScene(scene);
         stage.show();
+          
+        
     }
 
     /**

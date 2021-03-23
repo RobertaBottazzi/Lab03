@@ -22,7 +22,7 @@ public class Dictionary {
 				BufferedReader br = new BufferedReader(fr);
 				String word;
 				while ((word = br.readLine()) != null) {
-					english.add(word);
+					english.add(word.toLowerCase());
 				}
 				br.close();
 				} catch (IOException e){
@@ -35,7 +35,7 @@ public class Dictionary {
 				BufferedReader br = new BufferedReader(fr);
 				String word;
 				while ((word = br.readLine()) != null) {
-					italian.add(word);
+					italian.add(word.toLowerCase());
 				}
 				br.close();
 				} catch (IOException e){
@@ -44,19 +44,32 @@ public class Dictionary {
 		}		
 	}
 	
-	public List<RichWord> spellCheckTextLinear(List<String> inputTextList){
+	public List<RichWord> spellCheckTextLinear(List<String> inputTextList,String language){
 		List<RichWord> risultato= new ArrayList<>();
-		for(String input:inputTextList) {
-			if(english.contains(input) || italian.contains(input)) 
-				break;
-			else {
-				RichWord parola=new RichWord(input);
-				parola.setCorrect(false);
-				risultato.add(parola);				
+		if(language.equals("English")) {
+			for(String input:inputTextList) {
+				if(english.contains(input)) 
+					break;
+				else {
+					RichWord parola=new RichWord(input);
+					parola.setCorrect(false);
+					risultato.add(parola);				
+				}
 			}
+			return risultato;			
 		}
-		return risultato;
-		
+		else {
+			for(String input:inputTextList) {
+				if(italian.contains(input)) 
+					break;
+				else {
+					RichWord parola=new RichWord(input);
+					parola.setCorrect(false);
+					risultato.add(parola);				
+				}
+			}
+			return risultato;			
+		}	
 	}
 	
 	public List<RichWord> spellCheckTextDichotomic(List<String> inputTextList){
