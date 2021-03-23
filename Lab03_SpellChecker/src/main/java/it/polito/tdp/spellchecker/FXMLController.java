@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.spellchecker.model.Dictionary;
+import it.polito.tdp.spellchecker.model.RichWord;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -46,28 +47,29 @@ public class FXMLController {
 
     @FXML
     void doClearText(ActionEvent event) {
-
+    	this.txtInput.clear();
+    	this.txtErrors.clear();
     }
 
     @FXML
     void doSpellCheck(ActionEvent event) {
+    	//sistemo input
     	List<String> words= new ArrayList<>(); 
     	String parole = this.txtInput.getText();
     	parole = parole.toLowerCase().replaceAll("[^a-zA-Z]+"," ");
     	String[] arrayParole=parole.split(" ");
-    	
     	for(String s: arrayParole) 
     		words.add(s);
-    	
-   
-    	
-    	
-    	
-    	
-
+    	//carico il dizionario giusto
+    	dictionary.loadDictionary(boxLanguage.getValue());
+    	//controllo parole sbagliate
+    	List<RichWord> wrongWords= dictionary.spellCheckTextLinear(words,boxLanguage.getValue());
+    	this.txtErrors.setText(wrongWords.toString());
+    	this.numberErrors.setText("The text contains "+wrongWords.size()+" errors");
+    	System.out.println("SIZE: "+dictionary.getEnglish().size());
     }
-    
-    public void setModel(Dictionary model) {
+
+	public void setModel(Dictionary model) {
     	this.dictionary=model;   
     	boxLanguage.getItems().addAll("English","Italian");
     }

@@ -73,7 +73,7 @@
                         <Insets left="20.0" right="10.0" top="5.0" />
                      </HBox.margin>
                      <children>
-                        <Button fx:id="btnClearText" mnemonicParsing="false" onAction="#doClearText" text="Clear text" AnchorPane.leftAnchor="140.0" />
+                        <Button fx:id="btnClearText" mnemonicParsing="false" onAction="#doClearText" text="Clear text" AnchorPane.leftAnchor="130.0" />
                      </children>
                   </AnchorPane>
                </children>

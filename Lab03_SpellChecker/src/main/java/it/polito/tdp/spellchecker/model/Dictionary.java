@@ -1,9 +1,11 @@
 package it.polito.tdp.spellchecker.model;
 
 import java.io.BufferedReader;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Dictionary {
@@ -18,7 +20,7 @@ public class Dictionary {
 	public void loadDictionary(String language) {
 		if(language.equals("English")) {
 			try {
-				FileReader fr = new FileReader("English.txt");
+				FileReader fr = new FileReader("src/main/resources/English.txt");
 				BufferedReader br = new BufferedReader(fr);
 				String word;
 				while ((word = br.readLine()) != null) {
@@ -31,7 +33,7 @@ public class Dictionary {
 		}
 		else {
 			try {
-				FileReader fr = new FileReader("Italian.txt");
+				FileReader fr = new FileReader("src/main/resources/Italian.txt");
 				BufferedReader br = new BufferedReader(fr);
 				String word;
 				while ((word = br.readLine()) != null) {
@@ -48,32 +50,50 @@ public class Dictionary {
 		List<RichWord> risultato= new ArrayList<>();
 		if(language.equals("English")) {
 			for(String input:inputTextList) {
-				if(english.contains(input)) 
-					break;
-				else {
-					RichWord parola=new RichWord(input);
-					parola.setCorrect(false);
-					risultato.add(parola);				
-				}
+				if(!this.english.contains(input)) {
+						RichWord parola=new RichWord(input);
+						parola.setCorrect(false);
+						risultato.add(parola);	
+					}					
+				}				
 			}
-			return risultato;			
-		}
 		else {
 			for(String input:inputTextList) {
-				if(italian.contains(input)) 
-					break;
-				else {
+				if(!italian.contains(input)) {
 					RichWord parola=new RichWord(input);
 					parola.setCorrect(false);
-					risultato.add(parola);				
-				}
-			}
-			return risultato;			
-		}	
+					risultato.add(parola);
+				}			
+			}	
+		}
+		return risultato;
 	}
 	
-	public List<RichWord> spellCheckTextDichotomic(List<String> inputTextList){
-		return null;
+	public List<RichWord> spellCheckTextDichotomic(List<String> inputTextList, String language){
+		List<RichWord> risultato= new ArrayList<>();
+		Collections.sort(this.english);
+		Collections.sort(this.italian);
+		if(language.equals("English")) {
+			for(String input: inputTextList) {
+				int index = Collections.binarySearch(this.english, input);		        
+		        if(index < 0) {
+		        	RichWord parola=new RichWord(input);
+					parola.setCorrect(false);
+					risultato.add(parola);		        	
+		        }	               
+			}		
+		}
+		else {
+			for(String input: inputTextList) {
+				int index = Collections.binarySearch(this.italian, input);		        
+			    if(index < 0) {
+			    	RichWord parola=new RichWord(input);
+					parola.setCorrect(false);
+					risultato.add(parola);		        	
+			        }	               
+			}		
+		}		
+		return risultato;
 		
 	}
 
