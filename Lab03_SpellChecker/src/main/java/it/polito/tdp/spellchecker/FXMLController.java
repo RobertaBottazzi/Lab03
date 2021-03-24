@@ -49,29 +49,39 @@ public class FXMLController {
     void doClearText(ActionEvent event) {
     	this.txtInput.clear();
     	this.txtErrors.clear();
+    	this.txtTime.setText("");
     }
 
     @FXML
     void doSpellCheck(ActionEvent event) {
-    	//sistemo input
-    	List<String> words= new ArrayList<>(); 
+    	//sistemo input e creo strutture necessarie per risultato
+    	Long start=System.nanoTime();
+    	List<String> words= new ArrayList<>();
     	String parole = this.txtInput.getText();
     	parole = parole.toLowerCase().replaceAll("[^a-zA-Z]+"," ");
     	String[] arrayParole=parole.split(" ");
     	for(String s: arrayParole) 
     		words.add(s);
+    	String paroleSbagliate="";
     	//carico il dizionario giusto
     	dictionary.loadDictionary(boxLanguage.getValue());
     	//controllo parole sbagliate
-    	List<RichWord> wrongWords= dictionary.spellCheckTextLinear(words,boxLanguage.getValue());
-    	this.txtErrors.setText(wrongWords.toString());
+    	List<RichWord> wrongWords= dictionary.spellCheckTextLinear(words);
+    	//stampo errori ed il loro numero
+    	for(RichWord w: wrongWords) {
+    		paroleSbagliate+=w.toString();
+    	}
+    	this.txtErrors.setText(paroleSbagliate);
     	this.numberErrors.setText("The text contains "+wrongWords.size()+" errors");
-    	System.out.println("SIZE: "+dictionary.getEnglish().size());
+    	this.dictionary.getDizionario().clear();
+    	Long end=System.nanoTime();
+    	txtTime.setText("Spell check completed in "+((end.doubleValue()-start.doubleValue())/1000000000)+" seconds");
     }
 
 	public void setModel(Dictionary model) {
     	this.dictionary=model;   
-    	boxLanguage.getItems().addAll("English","Italian");
+    	boxLanguage.getItems().addAll("English","Italiano");
+    	boxLanguage.setValue("English");
     }
     @FXML
     void initialize() {
